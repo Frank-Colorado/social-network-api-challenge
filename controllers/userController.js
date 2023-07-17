@@ -4,7 +4,7 @@ const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({});
     res.json(users);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -26,7 +26,7 @@ const getUser = async (req, res) => {
       return;
     }
     res.json(user);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -36,7 +36,7 @@ const createUser = async (req, res) => {
   try {
     const user = await User.create({ username, email });
     res.json(user);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -57,7 +57,8 @@ const updateUser = async (req, res) => {
       return;
     }
     res.json(user);
-  } catch ({ err }) {
+  } catch (err) {
+    console.log({ err });
     res.status(500).json({ err });
   }
 };
@@ -70,7 +71,7 @@ const deleteUser = async (req, res) => {
       return;
     }
     res.json({ message: "User deleted." });
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -88,7 +89,7 @@ const addFriend = async (req, res) => {
       return;
     }
     res.json(user);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -106,7 +107,7 @@ const removeFriend = async (req, res) => {
       return;
     }
     res.json(user);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };

@@ -41,6 +41,17 @@ UserSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
+UserSchema.pre("findOneAndUpdate", async function (next) {
+  const updatedFields = this.getUpdate();
+  if (updatedFields.email) {
+    const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(updatedFields.email);
+    if (!emailIsValid) {
+      return next("Invalid email format");
+    }
+  }
+  next();
+});
+
 UserSchema.post("findOneAndDelete", async function (root) {
   if (root) {
     await Thought.deleteMany({
