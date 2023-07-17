@@ -18,7 +18,7 @@ const getUser = async (req, res) => {
       })
       .populate({
         path: "friends",
-        select: "-__v -email -thoughtsId -friends",
+        select: "-__v -email -thoughtsId",
       });
 
     if (!user) {
@@ -27,6 +27,7 @@ const getUser = async (req, res) => {
     }
     res.json(user);
   } catch (err) {
+    console.log({ err });
     res.status(500).json({ err });
   }
 };
