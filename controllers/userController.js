@@ -41,4 +41,25 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { username, email } = req.body;
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        username,
+        email,
+      },
+      { new: true }
+    );
+    if (!user) {
+      res.status(404).json({ message: "No user found with this id." });
+      return;
+    }
+    res.json(user);
+  } catch ({ err }) {
+    res.status(500).json({ err });
+  }
+};
+
 module.exports = { getAllUsers, getUser, createUser };
