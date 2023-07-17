@@ -94,3 +94,13 @@ const deleteReaction = async (req, res) => {
     res.status(500).json({ err });
   }
 };
+
+module.exports = {
+  getAllThoughts,
+  getThought,
+  createThought,
+  updateThought,
+  deleteThought,
+  addReaction,
+  deleteReaction,
+};
