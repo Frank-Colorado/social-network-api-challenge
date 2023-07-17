@@ -81,3 +81,16 @@ const addReaction = async (req, res) => {
     res.status(500).json({ err });
   }
 };
+
+const deleteReaction = async (req, res) => {
+  try {
+    const thought = await Thought.findByIdAndDelete(req.params.id);
+    if (!thought) {
+      res.status(404).json({ message: "No thought found with this id." });
+      return;
+    }
+    res.json(thought);
+  } catch ({ err }) {
+    res.status(500).json({ err });
+  }
+};
