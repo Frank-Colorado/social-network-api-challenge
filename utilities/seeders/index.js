@@ -20,14 +20,14 @@ db.once("open", async () => {
     email: faker.internet.email(),
   }));
 
-  const createdUsers = await User.collection.insertMany(userData);
-  console.log("here", createdUsers);
+  const createUsers = await User.collection.insertMany(userData);
+
   const allUsers = await User.find({});
   // For every created user grab their ID and push it into an array
   const userIds = allUsers.map((user) => user._id);
   // For each User their ID will be used to update their friends array.
   // A random amount of IDs will be pushed into the friends array
-  const newUsers = await Promise.all(
+  const addFriends = await Promise.all(
     userIds.map((userId) => {
       randomFriends = faker.helpers.arrayElements(userIds, {
         min: 2,
@@ -40,9 +40,8 @@ db.once("open", async () => {
       );
     })
   );
-  console.log("created users", newUsers);
 
-  const userNames = newUsers.map((user) => user.username);
+  const userNames = allUsers.map((user) => user.username);
 
   // Create Thoughts
   const thoughtData = Array.from({ length: 20 }).map(() => ({
@@ -50,9 +49,19 @@ db.once("open", async () => {
     username: userNames[Math.floor(Math.random() * userNames.length)],
   }));
 
-  const createdThoughts = await Thought.collection.insertMany(thoughtData);
+  const createThoughts = await Thought.collection.insertMany(thoughtData);
   // For every created thought grab their ID and push it into an array
   const allThoughts = await Thought.find({});
+
+  const newUsers = await Promise.all(
+    allThoughts.map((thought) => {
+      return User.findOneAndUpdate(
+        { username: thought.username },
+        { $push: { thoughtsId: thought._id } }
+      );
+    })
+  );
+
   const thoughtIds = allThoughts.map((thought) => thought._id);
   // For each User their ID will be used to update their thoughts array.
   // A random amount of reactions will be created and pushed into the reactions array
@@ -71,5 +80,6 @@ db.once("open", async () => {
       );
     })
   );
+  console.log("created users", newUsers);
   console.log("created thoughts", newThoughts);
 });
