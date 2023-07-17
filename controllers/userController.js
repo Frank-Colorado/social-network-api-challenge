@@ -31,3 +31,15 @@ const getUser = async (req, res) => {
     res.status(500).json({ err });
   }
 };
+
+const createUser = async (req, res) => {
+  const { username, email } = req.body;
+  try {
+    const user = await User.create({ username, email });
+    res.json(user);
+  } catch ({ err }) {
+    res.status(500).json({ err });
+  }
+};
+
+module.exports = { getAllUsers, getUser, createUser };
