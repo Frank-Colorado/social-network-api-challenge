@@ -41,6 +41,16 @@ UserSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
+UserSchema.post("findOneAndDelete", async function (root) {
+  if (root) {
+    await Thought.deleteMany({
+      _id: {
+        $in: root.thoughtsId,
+      },
+    });
+  }
+});
+
 const User = model("User", UserSchema);
 
 module.exports = User;
