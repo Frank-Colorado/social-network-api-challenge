@@ -21,3 +21,13 @@ const getThought = async (req, res) => {
     res.status(500).json({ err });
   }
 };
+
+const createThought = async (req, res) => {
+  const { thoughtText, username } = req.body;
+  try {
+    const thought = await Thought.create({ thoughtText, username });
+    res.json(thought);
+  } catch ({ err }) {
+    res.status(500).json({ err });
+  }
+};
