@@ -14,11 +14,11 @@ const getUser = async (req, res) => {
     const user = await User.findById(req.params.id)
       .populate({
         path: "thoughtsId",
-        select: "-__v",
+        select: "thoughtText createdAt reactions",
       })
       .populate({
         path: "friends",
-        select: "-__v -email -thoughtsId",
+        select: "username",
       });
 
     if (!user) {

@@ -33,6 +33,20 @@ ThoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
 
+// Hook that adds the thought to the user's thoughts array field
+ThoughtSchema.post("save", async function (doc, next) {
+  try {
+    const user = await model("User").findOneAndUpdate(
+      { username: doc.username },
+      { $addToSet: { thoughtsId: doc._id } }
+    );
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 const Thought = model("Thought", ThoughtSchema);
 
 module.exports = Thought;

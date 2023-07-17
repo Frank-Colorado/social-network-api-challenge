@@ -1,4 +1,4 @@
-const { Thought } = require("../models");
+const { Thought, User } = require("../models");
 
 const getAllThoughts = async (req, res) => {
   try {
@@ -25,6 +25,11 @@ const getThought = async (req, res) => {
 const createThought = async (req, res) => {
   const { thoughtText, username } = req.body;
   try {
+    const user = await User.findOne({ username: username });
+    if (!user) {
+      res.status(404).json({ message: "No user found with this username." });
+      return;
+    }
     const thought = await Thought.create({ thoughtText, username });
     res.json(thought);
   } catch (err) {
