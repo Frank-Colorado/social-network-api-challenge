@@ -31,3 +31,23 @@ const createThought = async (req, res) => {
     res.status(500).json({ err });
   }
 };
+
+const updateThought = async (req, res) => {
+  try {
+    const thought = await Thought.findByIdAndUpdate(
+      req.params.id,
+      {
+        thoughtText,
+        username,
+      },
+      { new: true }
+    );
+    if (!thought) {
+      res.status(404).json({ message: "No thought found with this id." });
+      return;
+    }
+    res.json(thought);
+  } catch ({ err }) {
+    res.status(500).json({ err });
+  }
+};
