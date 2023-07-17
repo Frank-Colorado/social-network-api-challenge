@@ -38,12 +38,12 @@ const createThought = async (req, res) => {
 };
 
 const updateThought = async (req, res) => {
+  const { thoughtText } = req.body;
   try {
     const thought = await Thought.findByIdAndUpdate(
       req.params.id,
       {
         thoughtText,
-        username,
       },
       { new: true }
     );
@@ -53,6 +53,7 @@ const updateThought = async (req, res) => {
     }
     res.json(thought);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ err });
   }
 };
