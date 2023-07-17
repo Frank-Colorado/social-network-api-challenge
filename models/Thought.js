@@ -29,14 +29,16 @@ const ThoughtSchema = new Schema(
   }
 );
 
+// This is a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
 ThoughtSchema.virtual("reactionCount").get(function () {
   return this.reactions.length;
 });
 
-// Hook that adds the thought to the user's thoughts array field
+// This is a post hook that will be called after 'save' is called on a thought.
 ThoughtSchema.post("save", async function (doc, next) {
   try {
-    const user = await model("User").findOneAndUpdate(
+    // We find the user by their username and update their thoughtsId array with the thought's ID
+    await model("User").findOneAndUpdate(
       { username: doc.username },
       { $addToSet: { thoughtsId: doc._id } }
     );
@@ -47,6 +49,7 @@ ThoughtSchema.post("save", async function (doc, next) {
   }
 });
 
+// The Thought model is created using the ThoughtSchema
 const Thought = model("Thought", ThoughtSchema);
 
 module.exports = Thought;
