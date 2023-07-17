@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(routes);
 
 mongoose
-  .connect("mongodb://127.0.0.1/mongooseTodoAppDb")
+  .connect("mongodb://127.0.0.1/socialNetworkDB")
   .then(() => {
     console.log("Connected to MongoDB");
   })

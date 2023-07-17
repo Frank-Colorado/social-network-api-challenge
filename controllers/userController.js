@@ -11,22 +11,21 @@ const getAllUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate(
-      {
+    const user = await User.findById(req.params.id)
+      .populate({
         path: "thoughtsId",
         select: "-__v",
-      },
-      {
+      })
+      .populate({
         path: "friends",
         select: "-__v -email -thoughtsId -friends",
-      }
-    );
+      });
+
     if (!user) {
       res.status(404).json({ message: "No user found with this id." });
       return;
     }
-    const userFriends = user.friendCount;
-    res.json({ user, userFriends });
+    res.json(user);
   } catch ({ err }) {
     res.status(500).json({ err });
   }
