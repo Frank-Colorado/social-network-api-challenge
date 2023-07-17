@@ -4,7 +4,7 @@ const getAllThoughts = async (req, res) => {
   try {
     const thoughts = await Thought.find({});
     res.json(thoughts);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -17,7 +17,7 @@ const getThought = async (req, res) => {
       return;
     }
     res.json(thought);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -27,7 +27,7 @@ const createThought = async (req, res) => {
   try {
     const thought = await Thought.create({ thoughtText, username });
     res.json(thought);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -47,7 +47,7 @@ const updateThought = async (req, res) => {
       return;
     }
     res.json(thought);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -60,7 +60,7 @@ const deleteThought = async (req, res) => {
       return;
     }
     res.json(thought);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -77,7 +77,7 @@ const addReaction = async (req, res) => {
       return;
     }
     res.json(thought);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
@@ -90,7 +90,7 @@ const deleteReaction = async (req, res) => {
       return;
     }
     res.json(thought);
-  } catch ({ err }) {
+  } catch (err) {
     res.status(500).json({ err });
   }
 };
