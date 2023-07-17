@@ -1,4 +1,4 @@
-const db = require("../config/connection");
+const db = require("../../config/connection");
 const { User, Thought } = require("../../models");
 const { faker } = require("@faker-js/faker");
 
@@ -21,8 +21,10 @@ db.once("open", async () => {
   }));
 
   const createdUsers = await User.collection.insertMany(userData);
+  console.log("here", createdUsers);
+  const allUsers = await User.find({});
   // For every created user grab their ID and push it into an array
-  const userIds = createdUsers.map((user) => user._id);
+  const userIds = allUsers.map((user) => user._id);
   // For each User their ID will be used to update their friends array.
   // A random amount of IDs will be pushed into the friends array
   const newUsers = await Promise.all(
@@ -40,17 +42,18 @@ db.once("open", async () => {
   );
   console.log("created users", newUsers);
 
-  const userNames = userData.map((user) => user.username);
+  const userNames = newUsers.map((user) => user.username);
 
   // Create Thoughts
   const thoughtData = Array.from({ length: 20 }).map(() => ({
     thoughtText: faker.lorem.sentence(),
-    username: userName[Math.floor(Math.random() * userNames.length)],
+    username: userNames[Math.floor(Math.random() * userNames.length)],
   }));
 
   const createdThoughts = await Thought.collection.insertMany(thoughtData);
   // For every created thought grab their ID and push it into an array
-  const thoughtIds = createdThoughts.map((thought) => thought._id);
+  const allThoughts = await Thought.find({});
+  const thoughtIds = allThoughts.map((thought) => thought._id);
   // For each User their ID will be used to update their thoughts array.
   // A random amount of reactions will be created and pushed into the reactions array
   const newThoughts = await Promise.all(
@@ -59,12 +62,11 @@ db.once("open", async () => {
         length: Math.floor(Math.random() * thoughtIds.length),
       }).map(() => ({
         reactionBody: faker.lorem.sentence(),
-        username: userName[Math.floor(Math.random() * userNames.length)],
+        username: userNames[Math.floor(Math.random() * userNames.length)],
       }));
-      const { reactionBody, username } = randomReactions;
       return Thought.findByIdAndUpdate(
         thoughtId,
-        { $push: { reactions: { reactionBody, username } } },
+        { $push: { reactions: randomReactions } },
         { new: true }
       );
     })
