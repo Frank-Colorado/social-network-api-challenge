@@ -93,4 +93,30 @@ const addFriend = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, getUser, createUser };
+const removeFriend = async (req, res) => {
+  const { userId, friendId } = req.params;
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { friends: friendId } },
+      { new: true }
+    );
+    if (!user) {
+      res.status(404).json({ message: "No user found with this id." });
+      return;
+    }
+    res.json(user);
+  } catch ({ err }) {
+    res.status(500).json({ err });
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  addFriend,
+  removeFriend,
+};
