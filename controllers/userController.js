@@ -25,7 +25,7 @@ const getUser = async (req, res) => {
       // We populate the friends field with the username field
       .populate({
         path: "friends",
-        select: "username",
+        select: "username friends",
       });
     // If the user does not exist
     if (!user) {
@@ -36,6 +36,7 @@ const getUser = async (req, res) => {
     // Otherwise we return the user as JSON
     res.json(user);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ err });
   }
 };
