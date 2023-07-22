@@ -40,7 +40,7 @@ N/A
 
 ## Usage
 
-Video link here ----
+This is a demonstration of all the working CRUD routes for the Social Networking API Database: https://drive.google.com/file/d/1zVlEkzHFm0Fu1L1K44kpmY57qwn6U_bH/view
 
 ## Credits
 
